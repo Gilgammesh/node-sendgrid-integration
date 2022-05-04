@@ -5,8 +5,14 @@ export const parse: Handler = (req, res) => {
 	const body = req.body;
 
 	const headers = body.headers;
-	const headersParts = headers.split('\n');
-	console.log('headersParts => ', headersParts);
+	const headersParts: string[] = headers.split('\n');
+	let messageId: string = '';
+	headersParts.forEach(part => {
+		if (part.includes('Message-ID:')) {
+			messageId = part.split(':')[1].replace(/ /g, '');
+		}
+	});
+	console.log('Message-ID => ', messageId);
 
 	const from: string = body.from;
 	const senderParts = addrs.parseOneAddress(from);

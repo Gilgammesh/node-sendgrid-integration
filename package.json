@@ -14,7 +14,6 @@
 	"license": "ISC",
 	"dependencies": {
 		"@sendgrid/mail": "^7.6.2",
-		"busboy": "^1.6.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.0",
 		"email-addresses": "^5.0.0",
