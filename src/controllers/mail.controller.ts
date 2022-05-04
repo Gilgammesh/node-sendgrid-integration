@@ -4,6 +4,10 @@ import addrs, { ParsedMailbox } from 'email-addresses';
 export const parse: Handler = (req, res) => {
 	const body = req.body;
 
+	const headers = body.headers;
+	const headersParts = headers.split('\n');
+	console.log('headersParts => ', headersParts);
+
 	const from: string = body.from;
 	const senderParts = addrs.parseOneAddress(from);
 	const emailSender = (senderParts as ParsedMailbox).address;
@@ -19,15 +23,19 @@ export const parse: Handler = (req, res) => {
 	const text: string = body.text;
 	console.log('description =>', text);
 
-	const ccs: string[] = body.cc.split(',');
-	const emailsCCs = ccs.map(cc => {
-		const ccParts = addrs.parseOneAddress(cc);
-		return (ccParts as ParsedMailbox).address;
-	});
-	console.log('emailsCCs =>', emailsCCs);
+	if (body.cc) {
+		const ccs: string[] = body.cc.split(',');
+		const emailsCCs = ccs.map(cc => {
+			const ccParts = addrs.parseOneAddress(cc);
+			return (ccParts as ParsedMailbox).address;
+		});
+		console.log('emailsCCs =>', emailsCCs);
+	}
 
-	const attachments = parseInt(body.attachments, 10);
-	console.log('attachments =>', attachments);
+	if (body.attachments) {
+		const attachments = parseInt(body.attachments, 10);
+		console.log('attachments =>', attachments);
+	}
 
 	if (req.files && req.files.length > 0) {
 		console.log(req.files);
