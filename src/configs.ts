@@ -12,3 +12,8 @@ dotenv.config();
 // Application variables //
 /*******************************************************************************************************/
 export const appPort: number = parseInt(process.env.APP_SENDGRID_PORT as string, 10) || 3000;
+
+/*******************************************************************************************************/
+// Sendgrid variables //
+/*******************************************************************************************************/
+export const apiKeySendgrid: string = process.env.SENDGRID_API_KEY || 'sendgrid_api_key';

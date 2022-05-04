@@ -1,5 +1,7 @@
 import { Handler } from 'express';
 import addrs, { ParsedMailbox } from 'email-addresses';
+import sgMail from '@sendgrid/mail';
+import { apiKeySendgrid } from '../configs';
 
 export const parse: Handler = (req, res) => {
 	const body = req.body;
@@ -29,14 +31,19 @@ export const parse: Handler = (req, res) => {
 	const text: string = body.text;
 	console.log('description =>', text);
 
+	const html: string = body.html;
+	console.log('html =>', html);
+
+	let subscribers = [emailSender];
 	if (body.cc) {
 		const ccs: string[] = body.cc.split(',');
 		const emailsCCs = ccs.map(cc => {
 			const ccParts = addrs.parseOneAddress(cc);
 			return (ccParts as ParsedMailbox).address;
 		});
-		console.log('emailsCCs =>', emailsCCs);
+		subscribers = [...subscribers, ...emailsCCs];
 	}
+	console.log('subscribers =>', subscribers);
 
 	if (body.attachments) {
 		const attachments = parseInt(body.attachments, 10);
@@ -49,5 +56,39 @@ export const parse: Handler = (req, res) => {
 		console.log('No files');
 	}
 
+	// Finish parsed email
+	console.log('email parsed');
+
+	/*  subscribers.forEach((sub) => { 
+        const template = ``
+     }) */
+
 	return res.json('Email parsed');
+};
+
+const sendEmail = async (to: string, from: string, subject: string, text: string, html: string, msgId: string) => {
+	// Pass sendgrid apikey
+	sgMail.setApiKey(apiKeySendgrid);
+
+	// Build content email
+	const email = {
+		to,
+		from,
+		subject,
+		text,
+		html,
+		headers: {
+			'In-Reply-To': msgId, // Reference the original Message ID
+			References: msgId // Reference the original Message ID
+		}
+	};
+
+	// Send email
+	try {
+		await sgMail.send(email);
+		return true;
+	} catch (error) {
+		console.error('mail.send error:', error);
+		return false;
+	}
 };
