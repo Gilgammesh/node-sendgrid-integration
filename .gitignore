@@ -1,0 +1,10 @@
+# Packages
+node_modules
+
+# Environment Variables
+.env
+.env.local
+.sendgrid.env
+
+# IDE - VSCode
+.vscode
