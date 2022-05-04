@@ -29,12 +29,12 @@ app.use(cors());
 const basePath: string = '/api';
 
 // Route Hello
-app.get(`${basePath}/hello'`, (req: Request, res: Response) => {
+app.get(`${basePath}/hello`, (req: Request, res: Response) => {
 	return res.json('Hello from API');
 });
 
 // Route Post parse email sent from sendgrid
-app.post('/api/parseEmail', upload.any(), mail.parse);
+app.post(`${basePath}/parseEmail`, upload.any(), mail.parse);
 
 /*******************************************************************************************************/
 // We start the express server //
