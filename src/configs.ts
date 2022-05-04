@@ -16,4 +16,4 @@ export const appPort: number = parseInt(process.env.APP_SENDGRID_PORT as string,
 /*******************************************************************************************************/
 // Sendgrid variables //
 /*******************************************************************************************************/
-export const apiKeySendgrid: string = process.env.SENDGRID_API_KEY || 'sendgrid_api_key';
+export const apiKeySendgrid: string = process.env.APP_SENDGRID_API_KEY || 'sendgrid_api_key';
