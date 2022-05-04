@@ -6,8 +6,8 @@
 	"scripts": {
 		"clean": "rimraf dist",
 		"build": "rimraf dist && tsc",
-		"start": "node dist/index.js",
-		"dev": "ts-node src/index.js"
+		"start": "node dist/index",
+		"dev": "ts-node src/index"
 	},
 	"keywords": [],
 	"author": "",
