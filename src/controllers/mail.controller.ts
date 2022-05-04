@@ -6,6 +6,9 @@ import { apiKeySendgrid } from '../configs';
 export const parse: Handler = (req, res) => {
 	const body = req.body;
 
+    console.log(body);
+    
+
 	const headers = body.headers;
 	const headersParts: string[] = headers.split('\n');
 	let messageId: string = '';
@@ -18,7 +21,7 @@ export const parse: Handler = (req, res) => {
 
 	const from: string = body.from;
 	const senderParts = addrs.parseOneAddress(from);
-	const emailSender = (senderParts as ParsedMailbox).address;
+	const emailSender: string = (senderParts as ParsedMailbox).address;
 	console.log('emailSender =>', emailSender);
 
 	const to: string = body.to;
@@ -34,7 +37,7 @@ export const parse: Handler = (req, res) => {
 	const html: string = body.html;
 	console.log('html =>', html);
 
-	let subscribers = [emailSender];
+	let subscribers: string[] = [emailSender];
 	if (body.cc) {
 		const ccs: string[] = body.cc.split(',');
 		const emailsCCs = ccs.map(cc => {
@@ -59,9 +62,26 @@ export const parse: Handler = (req, res) => {
 	// Finish parsed email
 	console.log('email parsed');
 
-	/*  subscribers.forEach((sub) => { 
-        const template = ``
-     }) */
+	/* subscribers.forEach(sub => {
+		const template: string = `
+        <div dir="ltr">
+          <div class="gmail_quote">
+            <div dir="ltr">
+              <div>Created by <b>${emailSender}</b></div>
+              <div><br></div>
+              <div><b>${subject}:</b>  ${text}  <br></div>
+              <div><br></div>
+              <div>Notes: You may reply to this email to register your comments or responses. You can also quote some other mail to subscribe.</div>
+            </div>
+          </div>
+        </div>
+        `;
+		if (await sendEmail(sub, 'carlos@vivatranslate.com', 'A new task has been created', )) {
+			console.log(`Mail to: ${sub} => successfully sent`);
+		} else {
+			console.log(`Mail to: ${sub} => shipping failure`);
+		}
+	}); */
 
 	return res.json('Email parsed');
 };
