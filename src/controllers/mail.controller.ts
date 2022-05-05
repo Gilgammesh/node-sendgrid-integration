@@ -6,6 +6,8 @@ import { apiKeySendgrid } from '../configs';
 export const parse: Handler = (req, res) => {
 	const body = req.body;
 
+	console.log(body);	
+
 	const headers = body.headers;
 	const headersParts: string[] = headers.split('\n');
 	let messageId: string = '';
@@ -83,7 +85,7 @@ export const parse: Handler = (req, res) => {
 		if (
 			await sendEmail(
 				sub,
-				'carlos@vivatranslate.com',
+				to,
 				'A new task has been created',
 				templateText,
 				templateHtml,
