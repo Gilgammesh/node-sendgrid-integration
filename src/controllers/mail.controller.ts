@@ -1,8 +1,10 @@
+// Import dependencies
 import { Handler } from 'express';
 import addrs, { ParsedMailbox } from 'email-addresses';
 import sgMail from '@sendgrid/mail';
 import { apiKeySendgrid, appDomain } from '../configs';
 
+// Controller for parse incoming email
 export const parse: Handler = (req, res) => {
   const body = req.body;
 
@@ -141,6 +143,7 @@ export const parse: Handler = (req, res) => {
   return res.json('Email parsed');
 };
 
+// Function for send email with sendgrid
 const sendEmail = async (
   to: string,
   from: string,
